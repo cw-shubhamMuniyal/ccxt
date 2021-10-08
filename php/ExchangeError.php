@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class ExchangeError extends BaseError {
+require_once PATH_TO_CCXT . 'BaseError.php';
 
-}
+class ExchangeError extends BaseError {};

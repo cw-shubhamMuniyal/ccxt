@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class NetworkError extends BaseError {
+require_once PATH_TO_CCXT . 'BaseError.php';
 
-}
+class NetworkError extends BaseError {};

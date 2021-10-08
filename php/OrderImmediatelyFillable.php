@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class OrderImmediatelyFillable extends InvalidOrder {
+require_once PATH_TO_CCXT . 'InvalidOrder.php';
 
-}
+class OrderImmediatelyFillable extends InvalidOrder {};

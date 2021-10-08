@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class AddressPending extends InvalidAddress {
+require_once PATH_TO_CCXT . 'InvalidAddress.php';
 
-}
+class AddressPending extends InvalidAddress {};

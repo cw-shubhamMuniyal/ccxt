@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class NotSupported extends ExchangeError {
+require_once PATH_TO_CCXT . 'ExchangeError.php';
 
-}
+class NotSupported extends ExchangeError {};

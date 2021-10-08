@@ -5,9 +5,11 @@
 
 from ccxt.async_support.base.exchange import Exchange
 from ccxt.base.errors import ExchangeError
+from ccxt.base.errors import ArgumentsRequired
+from ccxt.base.precise import Precise
 
 
-class btctradeua (Exchange):
+class btctradeua(Exchange):
 
     def describe(self):
         return self.deep_extend(super(btctradeua, self).describe(), {
@@ -16,11 +18,19 @@ class btctradeua (Exchange):
             'countries': ['UA'],  # Ukraine,
             'rateLimit': 3000,
             'has': {
-                'CORS': True,
-                'createMarketOrder': False,
+                'cancelOrder': True,
+                'CORS': None,
+                'createMarketOrder': None,
+                'createOrder': True,
+                'fetchBalance': True,
                 'fetchOpenOrders': True,
+                'fetchOrderBook': True,
+                'fetchTicker': True,
+                'fetchTrades': True,
+                'signIn': True,
             },
             'urls': {
+                'referral': 'https://btc-trade.com.ua/registration/22689',
                 'logo': 'https://user-images.githubusercontent.com/1294454/27941483-79fc7350-62d9-11e7-9f61-ac47f28fcd96.jpg',
                 'api': 'https://btc-trade.com.ua/api',
                 'www': 'https://btc-trade.com.ua',
@@ -50,23 +60,23 @@ class btctradeua (Exchange):
                 },
             },
             'markets': {
-                'BCH/UAH': {'id': 'bch_uah', 'symbol': 'BCH/UAH', 'base': 'BCH', 'quote': 'UAH'},
-                'BTC/UAH': {'id': 'btc_uah', 'symbol': 'BTC/UAH', 'base': 'BTC', 'quote': 'UAH', 'precision': {'price': 1}, 'limits': {'amount': {'min': 0.0000000001}}},
-                'DASH/BTC': {'id': 'dash_btc', 'symbol': 'DASH/BTC', 'base': 'DASH', 'quote': 'BTC'},
-                'DASH/UAH': {'id': 'dash_uah', 'symbol': 'DASH/UAH', 'base': 'DASH', 'quote': 'UAH'},
-                'DOGE/BTC': {'id': 'doge_btc', 'symbol': 'DOGE/BTC', 'base': 'DOGE', 'quote': 'BTC'},
-                'DOGE/UAH': {'id': 'doge_uah', 'symbol': 'DOGE/UAH', 'base': 'DOGE', 'quote': 'UAH'},
-                'ETH/UAH': {'id': 'eth_uah', 'symbol': 'ETH/UAH', 'base': 'ETH', 'quote': 'UAH'},
-                'ITI/UAH': {'id': 'iti_uah', 'symbol': 'ITI/UAH', 'base': 'ITI', 'quote': 'UAH'},
-                'KRB/UAH': {'id': 'krb_uah', 'symbol': 'KRB/UAH', 'base': 'KRB', 'quote': 'UAH'},
-                'LTC/BTC': {'id': 'ltc_btc', 'symbol': 'LTC/BTC', 'base': 'LTC', 'quote': 'BTC'},
-                'LTC/UAH': {'id': 'ltc_uah', 'symbol': 'LTC/UAH', 'base': 'LTC', 'quote': 'UAH'},
-                'NVC/BTC': {'id': 'nvc_btc', 'symbol': 'NVC/BTC', 'base': 'NVC', 'quote': 'BTC'},
-                'NVC/UAH': {'id': 'nvc_uah', 'symbol': 'NVC/UAH', 'base': 'NVC', 'quote': 'UAH'},
-                'PPC/BTC': {'id': 'ppc_btc', 'symbol': 'PPC/BTC', 'base': 'PPC', 'quote': 'BTC'},
-                'SIB/UAH': {'id': 'sib_uah', 'symbol': 'SIB/UAH', 'base': 'SIB', 'quote': 'UAH'},
-                'XMR/UAH': {'id': 'xmr_uah', 'symbol': 'XMR/UAH', 'base': 'XMR', 'quote': 'UAH'},
-                'ZEC/UAH': {'id': 'zec_uah', 'symbol': 'ZEC/UAH', 'base': 'ZEC', 'quote': 'UAH'},
+                'BCH/UAH': {'id': 'bch_uah', 'symbol': 'BCH/UAH', 'base': 'BCH', 'quote': 'UAH', 'baseId': 'bch', 'quoteId': 'uah'},
+                'BTC/UAH': {'id': 'btc_uah', 'symbol': 'BTC/UAH', 'base': 'BTC', 'quote': 'UAH', 'baseId': 'btc', 'quoteId': 'uah', 'precision': {'price': 1}, 'limits': {'amount': {'min': 0.0000000001}}},
+                'DASH/BTC': {'id': 'dash_btc', 'symbol': 'DASH/BTC', 'base': 'DASH', 'quote': 'BTC', 'baseId': 'dash', 'quoteId': 'btc'},
+                'DASH/UAH': {'id': 'dash_uah', 'symbol': 'DASH/UAH', 'base': 'DASH', 'quote': 'UAH', 'baseId': 'dash', 'quoteId': 'uah'},
+                'DOGE/BTC': {'id': 'doge_btc', 'symbol': 'DOGE/BTC', 'base': 'DOGE', 'quote': 'BTC', 'baseId': 'doge', 'quoteId': 'btc'},
+                'DOGE/UAH': {'id': 'doge_uah', 'symbol': 'DOGE/UAH', 'base': 'DOGE', 'quote': 'UAH', 'baseId': 'doge', 'quoteId': 'uah'},
+                'ETH/UAH': {'id': 'eth_uah', 'symbol': 'ETH/UAH', 'base': 'ETH', 'quote': 'UAH', 'baseId': 'eth', 'quoteId': 'uah'},
+                'ITI/UAH': {'id': 'iti_uah', 'symbol': 'ITI/UAH', 'base': 'ITI', 'quote': 'UAH', 'baseId': 'iti', 'quoteId': 'uah'},
+                'KRB/UAH': {'id': 'krb_uah', 'symbol': 'KRB/UAH', 'base': 'KRB', 'quote': 'UAH', 'baseId': 'krb', 'quoteId': 'uah'},
+                'LTC/BTC': {'id': 'ltc_btc', 'symbol': 'LTC/BTC', 'base': 'LTC', 'quote': 'BTC', 'baseId': 'ltc', 'quoteId': 'btc'},
+                'LTC/UAH': {'id': 'ltc_uah', 'symbol': 'LTC/UAH', 'base': 'LTC', 'quote': 'UAH', 'baseId': 'ltc', 'quoteId': 'uah'},
+                'NVC/BTC': {'id': 'nvc_btc', 'symbol': 'NVC/BTC', 'base': 'NVC', 'quote': 'BTC', 'baseId': 'nvc', 'quoteId': 'btc'},
+                'NVC/UAH': {'id': 'nvc_uah', 'symbol': 'NVC/UAH', 'base': 'NVC', 'quote': 'UAH', 'baseId': 'nvc', 'quoteId': 'uah'},
+                'PPC/BTC': {'id': 'ppc_btc', 'symbol': 'PPC/BTC', 'base': 'PPC', 'quote': 'BTC', 'baseId': 'ppc', 'quoteId': 'btc'},
+                'SIB/UAH': {'id': 'sib_uah', 'symbol': 'SIB/UAH', 'base': 'SIB', 'quote': 'UAH', 'baseId': 'sib', 'quoteId': 'uah'},
+                'XMR/UAH': {'id': 'xmr_uah', 'symbol': 'XMR/UAH', 'base': 'XMR', 'quote': 'UAH', 'baseId': 'xmr', 'quoteId': 'uah'},
+                'ZEC/UAH': {'id': 'zec_uah', 'symbol': 'ZEC/UAH', 'base': 'ZEC', 'quote': 'UAH', 'baseId': 'zec', 'quoteId': 'uah'},
             },
             'fees': {
                 'trading': {
@@ -84,33 +94,31 @@ class btctradeua (Exchange):
             },
         })
 
-    def sign_in(self):
-        return self.privatePostAuth()
+    async def sign_in(self, params={}):
+        return await self.privatePostAuth(params)
 
     async def fetch_balance(self, params={}):
-        response = await self.privatePostBalance()
+        await self.load_markets()
+        response = await self.privatePostBalance(params)
         result = {'info': response}
-        if 'accounts' in response:
-            accounts = response['accounts']
-            for b in range(0, len(accounts)):
-                account = accounts[b]
-                currency = account['currency']
-                balance = float(account['balance'])
-                result[currency] = {
-                    'free': balance,
-                    'used': 0.0,
-                    'total': balance,
-                }
+        balances = self.safe_value(response, 'accounts')
+        for i in range(0, len(balances)):
+            balance = balances[i]
+            currencyId = self.safe_string(balance, 'currency')
+            code = self.safe_currency_code(currencyId)
+            account = self.account()
+            account['total'] = self.safe_string(balance, 'balance')
+            result[code] = account
         return self.parse_balance(result)
 
     async def fetch_order_book(self, symbol, limit=None, params={}):
+        await self.load_markets()
         market = self.market(symbol)
-        bids = await self.publicGetTradesBuySymbol(self.extend({
+        request = {
             'symbol': market['id'],
-        }, params))
-        asks = await self.publicGetTradesSellSymbol(self.extend({
-            'symbol': market['id'],
-        }, params))
+        }
+        bids = await self.publicGetTradesBuySymbol(self.extend(request, params))
+        asks = await self.publicGetTradesSellSymbol(self.extend(request, params))
         orderbook = {
             'bids': [],
             'asks': [],
@@ -121,13 +129,15 @@ class btctradeua (Exchange):
         if asks:
             if 'list' in asks:
                 orderbook['asks'] = asks['list']
-        return self.parse_order_book(orderbook, None, 'bids', 'asks', 'price', 'currency_trade')
+        return self.parse_order_book(orderbook, symbol, None, 'bids', 'asks', 'price', 'currency_trade')
 
     async def fetch_ticker(self, symbol, params={}):
-        response = await self.publicGetJapanStatHighSymbol(self.extend({
+        await self.load_markets()
+        request = {
             'symbol': self.market_id(symbol),
-        }, params))
-        ticker = response['trades']
+        }
+        response = await self.publicGetJapanStatHighSymbol(self.extend(request, params))
+        ticker = self.safe_value(response, 'trades')
         timestamp = self.milliseconds()
         result = {
             'symbol': symbol,
@@ -154,140 +164,190 @@ class btctradeua (Exchange):
         tickerLength = len(ticker)
         if tickerLength > 0:
             start = max(tickerLength - 48, 0)
-            for t in range(start, len(ticker)):
-                candle = ticker[t]
+            for i in range(start, len(ticker)):
+                candle = ticker[i]
                 if result['open'] is None:
-                    result['open'] = candle[1]
-                if (result['high'] is None) or (result['high'] < candle[2]):
-                    result['high'] = candle[2]
-                if (result['low'] is None) or (result['low'] > candle[3]):
-                    result['low'] = candle[3]
+                    result['open'] = self.safe_number(candle, 1)
+                high = self.safe_number(candle, 2)
+                if (result['high'] is None) or ((high is not None) and (result['high'] < high)):
+                    result['high'] = high
+                low = self.safe_number(candle, 3)
+                if (result['low'] is None) or ((low is not None) and (result['low'] > low)):
+                    result['low'] = low
+                baseVolume = self.safe_number(candle, 5)
                 if result['baseVolume'] is None:
-                    result['baseVolume'] = -candle[5]
+                    result['baseVolume'] = baseVolume
                 else:
-                    result['baseVolume'] -= candle[5]
+                    result['baseVolume'] = self.sum(result['baseVolume'], baseVolume)
             last = tickerLength - 1
-            result['last'] = ticker[last][4]
+            result['last'] = self.safe_number(ticker[last], 4)
             result['close'] = result['last']
-            result['baseVolume'] = -1 * result['baseVolume']
         return result
 
-    def convert_cyrillic_month_name_to_string(self, cyrillic):
+    def convert_month_name_to_string(self, cyrillic):
         months = {
-            u'января': '01',
-            u'февраля': '02',
-            u'марта': '03',
-            u'апреля': '04',
-            u'мая': '05',
-            u'июня': '06',
-            u'июля': '07',
-            u'августа': '08',
-            u'сентября': '09',
-            u'октября': '10',
-            u'ноября': '11',
-            u'декабря': '12',
+            'Jan': '01',
+            'Feb': '02',
+            'Mar': '03',
+            'Apr': '04',
+            'May': '05',
+            'Jun': '06',
+            'Jul': '07',
+            'Aug': '08',
+            'Sept': '09',
+            'Oct': '10',
+            'Nov': '11',
+            'Dec': '12',
         }
-        month = None
-        if cyrillic in months:
-            month = months[cyrillic]
-        return month
+        return self.safe_string(months, cyrillic)
 
-    def parse_cyrillic_datetime(self, cyrillic):
+    def parse_exchange_specific_datetime(self, cyrillic):
         parts = cyrillic.split(' ')
-        day = parts[0]
-        month = self.convert_cyrillic_month_name_to_string(parts[1])
-        if not month:
-            raise ExchangeError(self.id + ' parseTrade() None month name: ' + cyrillic)
-        year = parts[2]
-        hms = parts[4]
-        hmsLength = len(hms)
-        if hmsLength == 7:
-            hms = '0' + hms
-        if len(day) == 1:
+        month = parts[0]
+        day = parts[1].replace(',', '')
+        if len(day) < 2:
             day = '0' + day
+        year = parts[2].replace(',', '')
+        month = month.replace(',', '')
+        month = month.replace('.', '')
+        month = self.convert_month_name_to_string(month)
+        if not month:
+            raise ExchangeError(self.id + ' parseTrade() unrecognized month name: ' + cyrillic)
+        hms = parts[3]
+        hmsParts = hms.split(':')
+        h = self.safe_string(hmsParts, 0)
+        m = '00'
+        ampm = self.safe_string(parts, 4)
+        if h == 'noon':
+            h = '12'
+        else:
+            intH = int(h)
+            if (ampm is not None) and (ampm[0] == 'p'):
+                intH = 12 + intH
+                if intH > 23:
+                    intH = 0
+            h = str(intH)
+            if len(h) < 2:
+                h = '0' + h
+            m = self.safe_string(hmsParts, 1, '00')
+            if len(m) < 2:
+                m = '0' + m
         ymd = '-'.join([year, month, day])
-        ymdhms = ymd + 'T' + hms
+        ymdhms = ymd + 'T' + h + ':' + m + ':00'
         timestamp = self.parse8601(ymdhms)
         # server reports local time, adjust to UTC
-        md = ''.join([month, day])
-        md = int(md)
         # a special case for DST
         # subtract 2 hours during winter
-        if md < 325 or md > 1028:
+        intM = int(m)
+        if intM < 11 or intM > 2:
             return timestamp - 7200000
         # subtract 3 hours during summer
         return timestamp - 10800000
 
-    def parse_trade(self, trade, market):
-        timestamp = self.parse_cyrillic_datetime(trade['pub_date'])
+    def parse_trade(self, trade, market=None):
+        timestamp = self.parse_exchange_specific_datetime(self.safe_string(trade, 'pub_date'))
+        id = self.safe_string(trade, 'id')
+        type = 'limit'
+        side = self.safe_string(trade, 'type')
+        priceString = self.safe_string(trade, 'price')
+        amountString = self.safe_string(trade, 'amnt_trade')
+        price = self.parse_number(priceString)
+        amount = self.parse_number(amountString)
+        cost = self.parse_number(Precise.string_mul(priceString, amountString))
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
         return {
-            'id': str(trade['id']),
+            'id': id,
             'info': trade,
             'timestamp': timestamp,
             'datetime': self.iso8601(timestamp),
-            'symbol': market['symbol'],
-            'type': 'limit',
-            'side': trade['type'],
-            'price': self.safe_float(trade, 'price'),
-            'amount': self.safe_float(trade, 'amnt_trade'),
+            'symbol': symbol,
+            'type': type,
+            'side': side,
+            'order': None,
+            'takerOrMaker': None,
+            'price': price,
+            'amount': amount,
+            'cost': cost,
+            'fee': None,
         }
 
     async def fetch_trades(self, symbol, since=None, limit=None, params={}):
+        await self.load_markets()
         market = self.market(symbol)
-        response = await self.publicGetDealsSymbol(self.extend({
+        request = {
             'symbol': market['id'],
-        }, params))
+        }
+        response = await self.publicGetDealsSymbol(self.extend(request, params))
         # they report each trade twice(once for both of the two sides of the fill)
         # deduplicate trades for that reason
         trades = []
         for i in range(0, len(response)):
-            if response[i]['id'] % 2:
+            id = self.safe_integer(response[i], 'id')
+            if id % 2:
                 trades.append(response[i])
         return self.parse_trades(trades, market, since, limit)
 
     async def create_order(self, symbol, type, side, amount, price=None, params={}):
         if type == 'market':
             raise ExchangeError(self.id + ' allows limit orders only')
+        await self.load_markets()
         market = self.market(symbol)
         method = 'privatePost' + self.capitalize(side) + 'Id'
-        order = {
+        request = {
             'count': amount,
-            'currency1': market['quote'],
-            'currency': market['base'],
+            'currency1': market['quoteId'],
+            'currency': market['baseId'],
             'price': price,
         }
-        return getattr(self, method)(self.extend(order, params))
+        return getattr(self, method)(self.extend(request, params))
 
     async def cancel_order(self, id, symbol=None, params={}):
-        return await self.privatePostRemoveOrderId({'id': id})
+        request = {
+            'id': id,
+        }
+        return await self.privatePostRemoveOrderId(self.extend(request, params))
 
-    def parse_order(self, trade, market):
-        timestamp = self.milliseconds
+    def parse_order(self, order, market=None):
+        timestamp = self.milliseconds()
+        symbol = None
+        if market is not None:
+            symbol = market['symbol']
         return {
-            'id': trade['id'],
+            'id': self.safe_string(order, 'id'),
+            'clientOrderId': None,
             'timestamp': timestamp,  # until they fix their timestamp
             'datetime': self.iso8601(timestamp),
             'lastTradeTimestamp': None,
             'status': 'open',
-            'symbol': market['symbol'],
+            'symbol': symbol,
             'type': None,
-            'side': trade['type'],
-            'price': trade['price'],
-            'amount': trade['amnt_trade'],
+            'timeInForce': None,
+            'postOnly': None,
+            'side': self.safe_string(order, 'type'),
+            'price': self.safe_number(order, 'price'),
+            'stopPrice': None,
+            'amount': self.safe_number(order, 'amnt_trade'),
             'filled': 0,
-            'remaining': trade['amnt_trade'],
+            'remaining': self.safe_number(order, 'amnt_trade'),
             'trades': None,
-            'info': trade,
+            'info': order,
+            'cost': None,
+            'average': None,
+            'fee': None,
         }
 
     async def fetch_open_orders(self, symbol=None, since=None, limit=None, params={}):
         if symbol is None:
-            raise ExchangeError(self.id + ' fetchOpenOrders requires a symbol argument')
+            raise ArgumentsRequired(self.id + ' fetchOpenOrders() requires a symbol argument')
+        await self.load_markets()
         market = self.market(symbol)
-        response = await self.privatePostMyOrdersSymbol(self.extend({
+        request = {
             'symbol': market['id'],
-        }, params))
-        orders = response['your_open_orders']
+        }
+        response = await self.privatePostMyOrdersSymbol(self.extend(request, params))
+        orders = self.safe_value(response, 'your_open_orders')
         return self.parse_orders(orders, market, since, limit)
 
     def nonce(self):

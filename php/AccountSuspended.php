@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class AccountSuspended extends AuthenticationError {
+require_once PATH_TO_CCXT . 'AuthenticationError.php';
 
-}
+class AccountSuspended extends AuthenticationError {};

@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class RequestTimeout extends NetworkError {
+require_once PATH_TO_CCXT . 'NetworkError.php';
 
-}
+class RequestTimeout extends NetworkError {};

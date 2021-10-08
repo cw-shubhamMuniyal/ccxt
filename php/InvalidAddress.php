@@ -2,8 +2,6 @@
 
 namespace ccxt;
 
-use Exception;
+require_once PATH_TO_CCXT . 'ExchangeError.php';
 
-class InvalidAddress extends ExchangeError {
-
-}
+class InvalidAddress extends ExchangeError {};

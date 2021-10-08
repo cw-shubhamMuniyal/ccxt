@@ -138,8 +138,6 @@
         "coinspot.com.au",
         "Crypto Capital",
         "cryptocapital.co",
-        "Cryptopia",
-        "cryptopia.co.nz",
         "DSX",
         "dsx.uk",
         "EXMO",
@@ -219,36 +217,48 @@
         "email": "rocket.mind@gmail.com",
         "homepage": "https://github.com/xpl",
         "role": "Developer"
+    }, {
+        "name": "Carlo Revelli",
+        "email": "carlo.revelli@berkeley.edu",
+        "homepage": "https://github.com/frosty00",
+        "role": "Junior Developer"
     }],
     "autoload": {
-        "psr-4" : {
-            "ccxt\\" : "php/"
-        }
+        "psr-4": {
+            "ccxt\\" : "php/",
+            "ccxt_async\\": "php/async/"
+        },
+        "files": [ "ccxt.php" ]
     },
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.5",
         "ext-bcmath": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-pcre": "*",
-        "kornrunner/secp256k1": "0.1.0",
+        "ext-json": "*",
+        "ext-openssl": "*",
         "ext-gmp": "*",
         "symfony/polyfill-mbstring": "^1.7",
-        "kornrunner/ethereum-util": "0.0.3",
-        "kornrunner/solidity": "0.1.2",
         "pear/console_table": "1.3.1"
+    },
+    "suggest": {
+        "recoil/recoil": "Required for asynchronous API calls to exchanges with PHP",
+        "recoil/react": "Required for asynchronous API calls to exchanges with PHP",
+        "clue/buzz-react": "Required for asynchronous API calls to exchanges with PHP",
+        "react/event-loop": "Required for asynchronous API calls to exchanges with PHP",
+        "clue/http-proxy-react": "Required for using a proxy when doing asynchronous API calls to exchanges with PHP"
     },
     "archive": {
         "exclude": [
             "/build",
+            "/dist",
             "/doc",
             "/js",
             "/python",
-            "/wiki",
-            "/ccxt.wiki"
+            "/wiki"
         ]
     },
     "require-dev": {
-        "phpunit/phpunit": "~6"
     }
 }

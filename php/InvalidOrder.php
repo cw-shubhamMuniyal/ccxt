@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class InvalidOrder extends ExchangeError {
+require_once PATH_TO_CCXT . 'ExchangeError.php';
 
-}
+class InvalidOrder extends ExchangeError {};

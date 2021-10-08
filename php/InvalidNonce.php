@@ -2,6 +2,6 @@
 
 namespace ccxt;
 
-class InvalidNonce extends NetworkError {
+require_once PATH_TO_CCXT . 'NetworkError.php';
 
-}
+class InvalidNonce extends NetworkError {};

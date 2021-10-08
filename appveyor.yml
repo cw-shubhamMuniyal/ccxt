@@ -1,19 +1,30 @@
 environment:
   matrix:
-    - nodejs_version: '8'
+    - nodejs_version: '13'
 install:
   - ps: Install-Product node $env:nodejs_version
+  - set LIB=C:\OpenSSL-Win64\lib;%LIB%
+  - set INCLUDE=C:\OpenSSL-Win64\include;%INCLUDE%
   - set CI=true
   - npm install --global npm@latest
-  - set PATH=%APPDATA%\npm;%PATH%
+  - set PATH=%APPDATA%\npm;C:\Python38;C:\Python38\Scripts;%PATH%
+  # Remove python2.7 from path
+  - set PATH=%PATH:C:\Python27;=%
+  - set PATH=%PATH:C:\Python27\Scripts;=%
+  - echo %PATH%
+  - dir C:\
   - npm install
+  - python --version
+  - pip --version
+  - python -m pip install --upgrade pip setuptools
   - pip install tox
   - pip install requests
-  - cinst -y curl
-  - SET PATH=C:\Program Files\curl;%PATH%
+  - pip install cryptography
+  - set PATH=C:\Program Files\curl;%PATH%
+  - setx PATH "%PATH%"
   - ps: Set-Service wuauserv -StartupType Manual
   - cinst -y php --allow-empty-checksums
-  - cd c:\tools\php72
+  - cd c:\tools\php80
   - copy php.ini-production php.ini
   - echo date.timezone="UTC" >> php.ini
   - echo extension_dir=ext >> php.ini
@@ -23,16 +34,14 @@ install:
 matrix:
   fast_finish: true
 build: off
-shallow_clone: true
-before_test:
-  - cinst pandoc
-  - pandoc -v
+clone_depth: 1
 test_script:
   - refreshenv
   - node --version
   - npm --version
-  - npm run build
-  - npm run test-base
+  - python --version
+  - npm run force-build
+  # - npm run test-base
 cache:
   - '%APPDATA%\npm-cache'
   - '%LOCALAPPDATA%\pip\Cache'
